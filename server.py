@@ -3,7 +3,11 @@ from des import des_cfb_decrypt, des_cfb_encrypt, key_generator
 
 def receive_message_from_client():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+<<<<<<< Updated upstream
     server_socket.bind(('0.0.0.0', 5008))
+=======
+    server_socket.bind(('0.0.0.0', 5004)) 
+>>>>>>> Stashed changes
     server_socket.listen(1)
     print("Server is listening for connections...")
 
