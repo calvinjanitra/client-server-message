@@ -1,7 +1,7 @@
 # Tugas 2 Keamanan Informasi
 
 ## Deskripsi Proyek
-Tugas ini ini bertujuan untuk mengimplementasikan enkripsi dan dekripsi menggunakan algoritma DES dengan mode CFB. Program ini memungkinkan dua pengguna untuk bertukar pesan terenkripsi melalui socket programming.
+Tugas ini bertujuan untuk mengimplementasikan enkripsi dan dekripsi menggunakan algoritma DES dengan mode CFB, yang dilengkapi dengan enkripsi kunci DES menggunakan algoritma RSA. Program ini memungkinkan dua pengguna untuk bertukar pesan terenkripsi melalui socket programming, di mana kunci DES yang digunakan untuk enkripsi pesan dienkripsi terlebih dahulu dengan kunci publik RSA milik server. Proses enkripsi dan dekripsi ini memastikan bahwa komunikasi antara client dan server aman, dengan RSA digunakan untuk melindungi kunci DES dan DES digunakan untuk melindungi data pesan.
 
 ## Anggota Kelompok
 
