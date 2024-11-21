@@ -22,45 +22,32 @@ def load_server_public_key(file_path="server_public_key.pem"):
         exit(1)
 
 def send_message_to_server(message, server_address=('192.168.188.10', 5010)):
-    """
-    Sends an encrypted message to the server using DES encryption.
-    The DES key is securely shared using RSA encryption.
-    """
-    # Generate DES key and initialization vector
     des_key, subkeys = generate_key()
     iv = generate_iv()
     
-    # Load the server's public RSA key
     public_key = load_server_public_key()
     cipher_rsa = PKCS1_OAEP.new(public_key)
 
-    # Encrypt the DES key using the server's RSA public key
     encrypted_des_key = cipher_rsa.encrypt(des_key)
 
-    # Encrypt the message using DES
     ciphertext = des_cfb_encrypt(message.encode(), subkeys, iv)
 
-    # Connect to the server
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         client_socket.connect(server_address)
         print(f"Connected to server at {server_address}")
 
-        # Send the RSA-encrypted DES key
         client_socket.sendall(encrypted_des_key)
         print("Encrypted DES Key Sent.")
 
-        # Send IV length first (4 bytes), then the IV itself
         iv_length = len(iv)
-        client_socket.sendall(iv_length.to_bytes(4, 'big'))  # Send length as 4 bytes
-        client_socket.sendall(iv)  # Send IV directly as bytes
+        client_socket.sendall(iv_length.to_bytes(4, 'big')) 
+        client_socket.sendall(iv)
         print(f"IV Sent (hex): {iv.hex()}")
 
-        # Send the ciphertext
         client_socket.sendall(ciphertext)
         print(f"Ciphertext Sent (hex): {ciphertext.hex()}")
 
-        # Wait for server's response on the same connection
         print("Waiting for server response...")
         encrypted_response = client_socket.recv(1024)
         if encrypted_response:
@@ -79,8 +66,8 @@ def send_message_to_server(message, server_address=('192.168.188.10', 5010)):
         client_socket.close()
 
 def main():
-    SERVER_IP = '192.168.188.10'  # Replace with your server's IP
-    SERVER_PORT = 5010            # Replace with your server's port
+    SERVER_IP = '192.168.188.10' 
+    SERVER_PORT = 5010         
     
     while True:
         message = input("Enter the message to send to the server (or 'quit' to exit): ")
