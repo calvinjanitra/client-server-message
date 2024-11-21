@@ -1,15 +1,23 @@
+import os
 import socket
 from des import des_cfb_decrypt, des_cfb_encrypt, key_generator
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
-import os
 
 def load_rsa_keys():
+    """
+    Load RSA private key from the file 'server_private_key.pem' to be used for decrypting 
+    the DES key that was encrypted with the RSA public key.
+    """
     with open("server_private_key.pem", "rb") as f:
         private_key = RSA.import_key(f.read())
     return private_key
 
 def handle_client_connection(conn, addr):
+    """
+    Handle the client connection to receive the encrypted DES key, IV, and data. It decrypts 
+    the received data using the DES key, and sends an encrypted response back to the client.
+    """
     try:
         encrypted_des_key = conn.recv(256)
         if not encrypted_des_key:
@@ -58,6 +66,10 @@ def handle_client_connection(conn, addr):
         conn.close()
 
 def run_server(port=5010):
+    """
+    Initialize the server to listen for incoming connections on the specified port. 
+    Accept connections and delegate processing to handle_client_connection.
+    """
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         server_socket.bind(('0.0.0.0', port))
@@ -75,4 +87,4 @@ def run_server(port=5010):
         server_socket.close()
 
 if __name__ == "__main__":
-    run_server(5010)
+    run_server(5008)
