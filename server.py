@@ -87,4 +87,4 @@ def run_server(port=5010):
         server_socket.close()
 
 if __name__ == "__main__":
-    run_server(5008)
+    run_server(5010)
